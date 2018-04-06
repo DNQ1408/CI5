@@ -1,18 +1,19 @@
-import java.util.Scanner;
+import java.util.Scanner
 
-public class InOut {
-    public static void main(String[] args) {
+object InOut {
+    @JvmStatic
+    fun main(args: Array<String>) {
         // Scanner
-        Scanner keyboardScanner = new Scanner(System.in);
+        val keyboardScanner = Scanner(System.`in`)
         // nextLine
         // nextInt
-        System.out.println("Enter a text:"); // Prompt, question
-        String line = keyboardScanner.nextLine();
+        println("Enter a text:") // Prompt, question
+        val line = keyboardScanner.nextLine()
         // Test
-        System.out.println(line);
+        println(line)
 
-        System.out.println("Enter a number");
-        int x = keyboardScanner.nextInt(); // validate
-        System.out.println(x);
+        println("Enter a number")
+        val x = keyboardScanner.nextInt() // validate
+        println(x)
     }
 }
