@@ -1,31 +1,32 @@
 import java.awt.*;
 
 public class Player {
-    public int[] xpoints;
-    public int[] ypoints;
-    public int npoints;
-    public int velocityX;
-    public Color color;
+    public Vector2D position;
+    private PolygonRenderer renderer;
+    PlayerMove playerMove;
+//    private PlayerShoot playerShoot;
 
-    public Player(int[] xpoints, int[] ypoints, int velocityX, Color color) {
-        this.xpoints = xpoints;
-        this.ypoints = ypoints;
-        this.npoints = xpoints.length;
-        this.velocityX = velocityX;
-        this.color = color;
-    }
 
-    public void run() {
-        for (int i = 0; i < xpoints.length; i++) {
-            this.xpoints[i] += velocityX;
-        }
-        System.out.println("Player Running");
+    public Player() {
+        this.position = new Vector2D();
+        this.renderer = new PolygonRenderer(Color.RED,
+                new Vector2D(),
+                new Vector2D(0, 16),
+                new Vector2D(20, 8)
+                );
+        this.playerMove = new PlayerMove();
+//        this.playerShoot = new PlayerShoot();
     }
 
     public void render(Graphics graphics) {
-        Polygon p = new Polygon(xpoints, ypoints, npoints);
-        graphics.setColor(color);
-        graphics.fillPolygon(p);
+        this.renderer.render(graphics, this.position);
+//        this.playerShoot.render(graphics);
+    }
+
+    public void run(){
+        this.playerMove.run(this);
+//        this.playerShoot.run();
+        this.renderer.angle = this.playerMove.angle;
     }
 
 }

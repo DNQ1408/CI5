@@ -1,4 +1,8 @@
 import javax.swing.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class GameWindow extends JFrame {
 
@@ -9,12 +13,50 @@ public class GameWindow extends JFrame {
 //        set size cho window
         this.setSize(1024, 600);
         this.setupGameCanvas();
+        this.eventKeyboard();
+        this.windowEvent();
         this.setVisible(true);/*Hien thi window*/
     }
 
     private void setupGameCanvas() {
         this.gameCanvas = new GameCanvas();
         this.add(this.gameCanvas);
+    }
+
+    private void eventKeyboard() {
+        this.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+
+            }
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+                    gameCanvas.player.playerMove.angle += -5.0;
+                    gameCanvas.player.playerMove.velocity.set(
+                            gameCanvas.player.playerMove.velocity.rotate(-5.0));
+                }
+                if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+                    gameCanvas.player.playerMove.angle += 5.0;
+                    gameCanvas.player.playerMove.velocity.set(
+                            gameCanvas.player.playerMove.velocity.rotate(+5.0));
+                }
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+//                System.out.println("keyReleased");
+            }
+        });
+    }
+
+    private void windowEvent(){
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                System.exit(1);
+            }
+        });
     }
 
     public void gameLoop() {
