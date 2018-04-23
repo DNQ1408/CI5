@@ -1,4 +1,3 @@
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -15,7 +14,7 @@ public class GameCanvas extends JPanel {
     private Background background;
     private Graphics graphics;
     private Random random;
-    private int countS = 0, countE = 0;
+    private FrameCounter frameCounterS, frameCounterE;
     public static Player player;
 
 
@@ -28,6 +27,8 @@ public class GameCanvas extends JPanel {
         this.random = new Random();
         this.background = new Background();
         this.background.position.set(0,0);
+        this.frameCounterE = new FrameCounter(30);
+        this.frameCounterS = new FrameCounter(30);
         this.player = new Player();
         this.player.position.set(200,200);
         this.setVisible(true);
@@ -56,11 +57,12 @@ public class GameCanvas extends JPanel {
     public void runAll() {
         // cap nhat tat ca moi thu
         this.createStar();
+        this.creatEnemy();
         this.stars.forEach(star -> star.run());
         this.enemies.forEach(enemy -> enemy.run());
 
         this.player.run();
-        this.creatEnemy();
+
         this.enemies.forEach(enemy -> enemy.velocity.set(
                         player.position
                                 .subtract(enemy.position)
@@ -70,25 +72,21 @@ public class GameCanvas extends JPanel {
     }
 
     private void createStar() {
-        if (this.countS == 30) {
+        if (this.frameCounterS.run()) {
             Star star = new Star();
             star.position.set(1024, this.random.nextInt(600));
             star.velocity.set(new Vector2D(this.random.nextInt(2) + 1, 0));
             this.stars.add(star);
-            this.countS = 0;
-        } else {
-            this.countS += 1;
+            this.frameCounterS.reset();
         }
     }
 
     private void creatEnemy() {
-        if (this.countE == 60) {
+        if (this.frameCounterE.run()) {
             Enemy enemy = new Enemy();
             enemy.position.set(new Vector2D(random.nextInt(1024), random.nextInt(600)));
             this.enemies.add(enemy);
-            this.countE = 0;
-        } else {
-            this.countE += 1;
+            this.frameCounterE.reset();
         }
     }
 

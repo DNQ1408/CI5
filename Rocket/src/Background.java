@@ -1,15 +1,8 @@
 import java.awt.*;
 
-public class Background {
-    public Vector2D position;
-    public BackgroundRenderer backgroundrenderer;
+public class Background extends GameObject {
 
     public Background() {
-        this.position = new Vector2D();
-        this.backgroundrenderer = new BackgroundRenderer(this.position);
-    }
-
-    public void render(Graphics graphics) {
-        this.backgroundrenderer.render(graphics);
+        this.renderer = new BackgroundRenderer(Color.BLACK,1024, 600);
     }
 }

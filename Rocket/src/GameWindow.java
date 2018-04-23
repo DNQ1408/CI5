@@ -25,32 +25,50 @@ public class GameWindow extends JFrame {
 
     private void eventKeyboard() {
         this.addKeyListener(new KeyListener() {
+            Vector2D defaultVelocity = new Vector2D(3.5f, 0);
+
             @Override
             public void keyTyped(KeyEvent e) {
 
             }
+
             @Override
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_LEFT) {
                     gameCanvas.player.playerMove.angle += -5.0;
-                    gameCanvas.player.playerMove.velocity.set(
-                            gameCanvas.player.playerMove.velocity.rotate(-5.0));
                 }
                 if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
                     gameCanvas.player.playerMove.angle += 5.0;
-                    gameCanvas.player.playerMove.velocity.set(
-                            gameCanvas.player.playerMove.velocity.rotate(+5.0));
                 }
+                if (e.getKeyCode() == KeyEvent.VK_UP) {
+                    defaultVelocity.set(10, 0);
+                }
+                if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+                    gameCanvas.player.playerShoot.shooting = true;
+                }
+                gameCanvas.player.playerMove.velocity.set(defaultVelocity.rotate(gameCanvas.player.playerMove.angle));
             }
 
             @Override
             public void keyReleased(KeyEvent e) {
-//                System.out.println("keyReleased");
+                if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+//                    gameCanvas.player.playerMove.angle = 0;
+                }
+                if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+//                    gameCanvas.player.playerMove.angle = 0;
+                }
+                if (e.getKeyCode() == KeyEvent.VK_UP) {
+                    defaultVelocity.set(3.5f, 0);
+                }
+                if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+                    gameCanvas.player.playerShoot.shooting = false;
+                }
+                gameCanvas.player.playerMove.velocity.set(defaultVelocity.rotate(gameCanvas.player.playerMove.angle));
             }
         });
     }
 
-    private void windowEvent(){
+    private void windowEvent() {
         this.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
