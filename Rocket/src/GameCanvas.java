@@ -1,7 +1,9 @@
 import base.GameObjectManager;
 import game.background.Background;
+import game.enemy.Enemy;
 import game.enemy.EnemySqwaner;
 import game.player.Player;
+import game.star.Star;
 import game.star.StarSqwaner;
 
 import javax.swing.*;
@@ -18,10 +20,10 @@ public class GameCanvas extends JPanel {
     public GameCanvas() {
         this.setSize(1024, 600);
         this.setupBackBuffered();
-        GameObjectManager.instance.add(new Background());
+        GameObjectManager.instance.recycle(Background.class);
         this.setupPlayer();
-        GameObjectManager.instance.add(new EnemySqwaner());
-        GameObjectManager.instance.add(new StarSqwaner());
+        GameObjectManager.instance.recycle(EnemySqwaner.class);
+        GameObjectManager.instance.recycle(StarSqwaner.class).creatAction();
         this.setVisible(true);
     }
 
@@ -31,9 +33,8 @@ public class GameCanvas extends JPanel {
     }
 
     private void setupPlayer() {
-        this.player = new Player();
+        this.player = GameObjectManager.instance.recycle(Player.class);
         this.player.position.set(200, 200);
-        GameObjectManager.instance.add(this.player);
     }
 
     @Override

@@ -18,10 +18,9 @@ public class PlayerShoot {
     public void run(Player player) {
         if (this.shooting) {
             if (this.frameCounter.run()) {
-                BulletPlayer bulletPlayer = new BulletPlayer();
+                BulletPlayer bulletPlayer = GameObjectManager.instance.recycle(BulletPlayer.class);
                 bulletPlayer.position.set(player.position);
                 bulletPlayer.velocity.set(new Vector2D(7,0).rotate(player.playerMove.angle));
-                GameObjectManager.instance.add(bulletPlayer);
                 this.frameCounter.reset();
             }
         } else {

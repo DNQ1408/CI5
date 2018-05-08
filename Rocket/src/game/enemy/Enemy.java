@@ -1,20 +1,23 @@
 package game.enemy;
 
 import base.GameObject;
-import base.GameObjectManager;
-import game.player.Player;
+import game.enemy.explosion.EffectExplosion;
 import physic.BoxCollider;
+import physic.HitObject;
+import physic.PhysicBody;
 import renderer.ImageRenderer;
 
+import java.awt.*;
 
-public class Enemy extends GameObject {
+
+public class Enemy extends GameObject implements PhysicBody, HitObject{
     public BoxCollider boxCollider;
     public EnemyShoot enemyShoot;
     public EnemyMove enemyMove;
 
     public Enemy() {
         this.enemyMove = new EnemyMove();
-        this.renderer = new ImageRenderer("resources/images/circle.png", 10,10);
+        this.renderer = new ImageRenderer("resources/images/circle.png", 15,15, Color.ORANGE);
         this.enemyShoot = new EnemyShoot();
         this.boxCollider = new BoxCollider(10, 10);
     }
@@ -25,19 +28,18 @@ public class Enemy extends GameObject {
         this.boxCollider.position.set(this.position);
         this.enemyMove.run(this);
         this.enemyShoot.run(this);
-        this.checkCollision();
     }
 
-    public void checkCollision(){
-        Player player = GameObjectManager.instance.checkCollisionPlayer(this.boxCollider);
-        if (player != null) {
-            player.getHit();
-            this.getHit();
-        }
-    }
-
-    public void getHit() {
+    @Override
+    public void getHit(GameObject gameObject) {
         this.isAlive = false;
+        EffectExplosion effectExplosion = new EffectExplosion();
+        effectExplosion.position = this.position;
+        effectExplosion.run();
     }
 
+    @Override
+    public BoxCollider getBoxCollider() {
+        return this.boxCollider;
+    }
 }

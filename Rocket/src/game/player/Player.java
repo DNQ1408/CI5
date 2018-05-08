@@ -2,15 +2,23 @@ package game.player;
 
 import base.GameObject;
 import base.Vector2D;
+import game.enemy.Enemy;
+import game.enemy.bullet.BulletEnemy;
+import particle.EffectSmoke;
 import physic.BoxCollider;
+import physic.HitObject;
+import physic.PhysicBody;
+import physic.RunHitObject;
 import renderer.PolygonRenderer;
 
 import java.awt.*;
 
-public class Player extends GameObject {
+public class Player extends GameObject implements PhysicBody, HitObject{
     public BoxCollider boxCollider;
     public PlayerMove playerMove;
     public PlayerShoot playerShoot;
+    private RunHitObject runHitObject;
+    public EffectSmoke effectSmoke;
 
     public Player() {
         this.position = new Vector2D();
@@ -21,7 +29,12 @@ public class Player extends GameObject {
         );
         this.playerMove = new PlayerMove();
         this.playerShoot = new PlayerShoot();
-        this.boxCollider = new BoxCollider(20, 20);
+        this.boxCollider = new BoxCollider(20, 16);
+        this.runHitObject = new RunHitObject(
+                Enemy.class,
+                BulletEnemy.class
+        );
+        this.effectSmoke = new EffectSmoke();
     }
 
     @Override
@@ -31,10 +44,17 @@ public class Player extends GameObject {
         this.playerMove.run(this);
         ((PolygonRenderer)this.renderer).angle = this.playerMove.angle;
         this.playerShoot.run(this);
-
+        this.runHitObject.run(this);
+        this.effectSmoke.run(this);
     }
 
-    public void getHit() {
+    @Override
+    public void getHit(GameObject gameObject) {
         this.isAlive = false;
+    }
+
+    @Override
+    public BoxCollider getBoxCollider() {
+        return this.boxCollider;
     }
 }
